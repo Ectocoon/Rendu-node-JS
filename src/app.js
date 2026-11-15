@@ -7,6 +7,16 @@ const app = express()
 
 app.use(cors())
 
+// Page d'accueil : liste les routes disponibles
+app.get('/', (req, res) => {
+    res.json({
+        message: 'API Recettes, basée sur TheMealDB',
+        routes: [
+            'GET /api/recettes'
+        ]
+    })
+})
+
 app.use('/api/recettes', recettesRoutes)
 
 // Aucune route ne correspond
