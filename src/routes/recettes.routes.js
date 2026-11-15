@@ -45,6 +45,15 @@ router.get('/', async (req, res) => {
     })
 })
 
+// Une recette au hasard
+// A déclarer AVANT /:id, sinon Express croit que "hasard" est un id
+router.get('/hasard', async (req, res) => {
+    const recettes = await chercherRecettes()
+    const index = Math.floor(Math.random() * recettes.length)
+
+    res.json(recettes[index])
+})
+
 router.get('/:id', async (req, res) => {
     const recette = await chercherUneRecette(req.params.id)
 
