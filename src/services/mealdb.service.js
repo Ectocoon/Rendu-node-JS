@@ -21,8 +21,9 @@ function nettoyer (recette) {
     return {
         id: recette.idMeal,
         nom: recette.strMeal,
-        categorie: recette.strCategory,
-        pays: recette.strArea,
+        categorie: recette.strCategory || 'Inconnue',
+        // 190 recettes sur 790 n'ont pas de pays (null) dans TheMealDB
+        pays: recette.strArea || 'Inconnu',
         image: recette.strMealThumb,
         ingredients: ingredients,
         nbIngredients: ingredients.length
