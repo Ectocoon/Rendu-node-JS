@@ -29,14 +29,32 @@ function nettoyer (recette) {
     }
 }
 
-export async function chercherRecettes () {
-    const response = await fetch(BASE + '/search.php?s=')
-    const donnees = await response.json()
+// Garde toutes les recettes en mémoire après le premier chargement
+let cache = null
 
-    // meals vaut null quand la recherche ne trouve rien
-    if (!donnees.meals) {
-        return []
+const LETTRES = 'abcdefghijklmnopqrstuvwxyz'
+
+export async function chercherRecettes () {
+    if (cache) {
+        return cache
     }
 
-    return donnees.meals.map(nettoyer)
+    const toutes = []
+
+    // TheMealDB n'a pas de "donne-moi tout" :
+    // on demande les recettes qui commencent par a, puis b, puis c...
+    for (const lettre of LETTRES) {
+        const response = await fetch(BASE + '/search.php?f=' + lettre)
+        const donnees = await response.json()
+
+        // meals vaut null quand aucune recette ne commence par cette lettre
+        if (donnees.meals) {
+            for (const recette of donnees.meals) {
+                toutes.push(nettoyer(recette))
+            }
+        }
+    }
+
+    cache = toutes
+    return cache
 }
