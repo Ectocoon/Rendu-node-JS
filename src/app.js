@@ -12,7 +12,8 @@ app.get('/', (req, res) => {
     res.json({
         message: 'API Recettes, basée sur TheMealDB',
         routes: [
-            'GET /api/recettes'
+            'GET /api/recettes',
+            'GET /api/recettes/:id'
         ]
     })
 })

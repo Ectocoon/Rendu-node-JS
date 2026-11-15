@@ -58,3 +58,17 @@ export async function chercherRecettes () {
     cache = toutes
     return cache
 }
+
+// Renvoie une recette propre, ou null si l'id n'existe pas
+export async function chercherUneRecette (id) {
+    const response = await fetch(BASE + '/lookup.php?i=' + id)
+    const donnees = await response.json()
+
+    // TheMealDB répond 200 même si l'id n'existe pas :
+    // meals vaut null (id inconnu) ou "Invalid ID" (id qui n'est pas un nombre)
+    if (!Array.isArray(donnees.meals)) {
+        return null
+    }
+
+    return nettoyer(donnees.meals[0])
+}
